@@ -22,8 +22,8 @@ from azure.keyvault.secrets import SecretClient
 # Hydration config — written by dwe-core at create-service / update-service time
 # ─────────────────────────────────────────────────────────────────────────────
 _hydration = Path(__file__).parent / "dwe-hydration.yaml"
-if _hydration.exists():
-    _dwe         = yaml.safe_load(_hydration.read_text())
+_dwe         = yaml.safe_load(_hydration.read_text()) if _hydration.exists() else {}
+if _dwe:
     project_name    = _dwe["project_name"]
     git_repo_url    = _dwe["git_repo_url"]
     adapter_version = _dwe["adapter_version"]
