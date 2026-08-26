@@ -85,7 +85,7 @@ db_host = secrets["DB_HOST"]
 db_pass = secrets["DB_PASS"]
 db_user = secrets.get("DB_USER", "coder")
 db_port = secrets.get("DB_PORT", "5432")
-db_name = f"coder_{env}" if env != "prod" else "coder"
+db_name = f"coder_{env}"
 coder_pg_url = f"postgres://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
 
 # ── Coder runtime — validate presence; EC2 reads them from .env at boot ───────
