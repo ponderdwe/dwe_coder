@@ -9,7 +9,6 @@ __pycache__/
 # Pulumi state and virtualenv
 pulumi/venv/
 pulumi/.pulumi/
-pulumi/dwe-hydration.yaml
 *.yaml.bak
 
 # OS
