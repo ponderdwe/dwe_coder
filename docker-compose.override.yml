@@ -1,0 +1,29 @@
+# LOCAL DEVELOPMENT OVERRIDE
+# Automatically merged when running: docker-compose up -d
+# Adds a local PostgreSQL container for Coder metadata.
+#
+# Production skips this file: docker-compose -f docker-compose.yml up -d
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: coder_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: coder
+      POSTGRES_USER: coder
+      POSTGRES_PASSWORD: coder
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_home:/var/lib/postgresql/data
+
+  coder:
+    depends_on:
+      - db
+    environment:
+      - CODER_PG_CONNECTION_URL=postgres://coder:coder@db:5432/coder
+
+volumes:
+  db_home:
+    external: false

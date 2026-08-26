@@ -1,0 +1,17 @@
+# Environment secrets — never commit
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Pulumi state and virtualenv
+pulumi/venv/
+pulumi/.pulumi/
+pulumi/dwe-hydration.yaml
+*.yaml.bak
+
+# OS
+.DS_Store
+Thumbs.db

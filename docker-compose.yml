@@ -1,0 +1,33 @@
+# Production: docker-compose -f docker-compose.yml up -d
+# Local dev:  docker-compose up -d  (merges override — adds local Postgres)
+
+services:
+  coder:
+    image: ghcr.io/coder/coder:${CODER_VERSION:-v2.34.3}
+    container_name: coder_app
+    restart: unless-stopped
+    ports:
+      - "7080:7080"
+    env_file:
+      - .env
+    environment:
+      - CODER_HTTP_ADDRESS=0.0.0.0:7080
+      - CODER_PG_CONNECTION_URL=${CODER_PG_CONNECTION_URL}
+      - CODER_ACCESS_URL=${CODER_ACCESS_URL}
+      - CODER_WILDCARD_ACCESS_URL=${CODER_WILDCARD_ACCESS_URL}
+    group_add:
+      - "998"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - coder_home:/home/coder
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7080/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    stop_grace_period: 30s
+
+volumes:
+  coder_home:
+    external: false
