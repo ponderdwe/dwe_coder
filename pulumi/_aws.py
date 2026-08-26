@@ -20,10 +20,17 @@ import yaml
 # ─────────────────────────────────────────────────────────────────────────────
 # Hydration config — written by dwe-core at create-service / update-service time
 # ─────────────────────────────────────────────────────────────────────────────
-_dwe = yaml.safe_load((Path(__file__).parent / "dwe-hydration.yaml").read_text())
-project_name    = _dwe["project_name"]
-git_repo_url    = _dwe["git_repo_url"]
-adapter_version = _dwe["adapter_version"]
+_hydration = Path(__file__).parent / "dwe-hydration.yaml"
+if _hydration.exists():
+    _dwe         = yaml.safe_load(_hydration.read_text())
+    project_name    = _dwe["project_name"]
+    git_repo_url    = _dwe["git_repo_url"]
+    adapter_version = _dwe["adapter_version"]
+else:
+    _cfg         = pulumi.Config()
+    project_name    = _cfg.require("project_name")
+    git_repo_url    = _cfg.require("git_repo_url")
+    adapter_version = _cfg.get("adapter_version") or "v1.0.0"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Stack Config
