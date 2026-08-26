@@ -29,8 +29,8 @@ if _dwe:
     adapter_version = _dwe["adapter_version"]
 else:
     _cfg         = pulumi.Config()
-    project_name    = _cfg.require("project_name")
-    git_repo_url    = _cfg.require("git_repo_url")
+    project_name    = _cfg.get("project_name") or pulumi.get_project()
+    git_repo_url    = _cfg.get("git_repo_url") or ""
     adapter_version = _cfg.get("adapter_version") or "v1.0.0"
 
 # ─────────────────────────────────────────────────────────────────────────────

@@ -78,9 +78,6 @@ jobs:
           pulumi config set {@ PROJECT_NAME @}:key_vault_name ${{ secrets.KEY_VAULT_NAME }} --stack ${{ env.WORKSPACE }}
           pulumi config set {@ PROJECT_NAME @}:resource_group ${{ secrets.RESOURCE_GROUP }} --stack ${{ env.WORKSPACE }}
           pulumi config set {@ PROJECT_NAME @}:subscription_id ${{ secrets.AZURE_SUBSCRIPTION_ID }} --stack ${{ env.WORKSPACE }}
-          pulumi config set {@ PROJECT_NAME @}:project_name {@ project_name @} --stack ${{ env.WORKSPACE }}
-          pulumi config set {@ PROJECT_NAME @}:git_repo_url {@ git_repo_url @} --stack ${{ env.WORKSPACE }} --plaintext
-          pulumi config set {@ PROJECT_NAME @}:adapter_version {@ adapter_version @} --stack ${{ env.WORKSPACE }}
           pulumi config set {@ PROJECT_NAME @}:cloud_provider {@ CLOUD_PROVIDER @} --stack ${{ env.WORKSPACE }}
         working-directory: pulumi
         env:
@@ -109,9 +106,6 @@ jobs:
       - name: Init stack and set config
         run: |
           pulumi stack select ${{ env.WORKSPACE }} 2>/dev/null || pulumi stack init ${{ env.WORKSPACE }}
-          pulumi config set {@ PROJECT_NAME @}:project_name {@ project_name @} --stack ${{ env.WORKSPACE }}
-          pulumi config set {@ PROJECT_NAME @}:git_repo_url {@ git_repo_url @} --stack ${{ env.WORKSPACE }} --plaintext
-          pulumi config set {@ PROJECT_NAME @}:adapter_version {@ adapter_version @} --stack ${{ env.WORKSPACE }}
           pulumi config set {@ PROJECT_NAME @}:cloud_provider {@ CLOUD_PROVIDER @} --stack ${{ env.WORKSPACE }}
         working-directory: pulumi
         env:
@@ -160,9 +154,6 @@ jobs:
           pulumi config set {@ PROJECT_NAME @}:key_vault_name ${{ secrets.KEY_VAULT_NAME }} --stack ${{ env.WORKSPACE }}
           pulumi config set {@ PROJECT_NAME @}:resource_group ${{ secrets.RESOURCE_GROUP }} --stack ${{ env.WORKSPACE }}
           pulumi config set {@ PROJECT_NAME @}:subscription_id ${{ secrets.AZURE_SUBSCRIPTION_ID }} --stack ${{ env.WORKSPACE }}
-          pulumi config set {@ PROJECT_NAME @}:project_name {@ project_name @} --stack ${{ env.WORKSPACE }}
-          pulumi config set {@ PROJECT_NAME @}:git_repo_url {@ git_repo_url @} --stack ${{ env.WORKSPACE }} --plaintext
-          pulumi config set {@ PROJECT_NAME @}:adapter_version {@ adapter_version @} --stack ${{ env.WORKSPACE }}
           pulumi config set {@ PROJECT_NAME @}:cloud_provider {@ CLOUD_PROVIDER @} --stack ${{ env.WORKSPACE }}
           pulumi config set startup_code_version "${{ github.sha }}" --stack ${{ env.WORKSPACE }}
           pulumi up --yes --stack ${{ env.WORKSPACE }}
@@ -207,9 +198,6 @@ jobs:
         run: |
           cd pulumi
           pulumi stack select ${{ env.WORKSPACE }} 2>/dev/null || pulumi stack init ${{ env.WORKSPACE }}
-          pulumi config set {@ PROJECT_NAME @}:project_name {@ project_name @} --stack ${{ env.WORKSPACE }}
-          pulumi config set {@ PROJECT_NAME @}:git_repo_url {@ git_repo_url @} --stack ${{ env.WORKSPACE }} --plaintext
-          pulumi config set {@ PROJECT_NAME @}:adapter_version {@ adapter_version @} --stack ${{ env.WORKSPACE }}
           pulumi config set {@ PROJECT_NAME @}:cloud_provider {@ CLOUD_PROVIDER @} --stack ${{ env.WORKSPACE }}
           pulumi config set startup_code_version "${{ github.sha }}" --stack ${{ env.WORKSPACE }}
           pulumi up --yes --stack ${{ env.WORKSPACE }}
