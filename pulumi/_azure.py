@@ -428,8 +428,18 @@ vmss = azure_native.compute.VirtualMachineScaleSet(
 )
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Azure DNS — A record → App Gateway public IP
+# Azure DNS — A record + wildcard → App Gateway public IP
+# Wildcard is required for Coder subdomain apps
+# (e.g. airflow--user--workspace.coder.ponderdwe.com)
 # ─────────────────────────────────────────────────────────────────────────────
+_a_records = (
+    [azure_native.network.ARecordArgs(ipv4_address=common_app_gw_public_ip)]
+    if use_common_lb else
+    public_ip.ip_address.apply(
+        lambda ip: [azure_native.network.ARecordArgs(ipv4_address=ip)] if ip else []
+    )
+)
+
 azure_native.network.RecordSet(
     f"{project_name}-dns{suffix}",
     resource_group_name=dns_zone_rg,
@@ -437,13 +447,17 @@ azure_native.network.RecordSet(
     relative_record_set_name=dns_record_name,
     record_type="A",
     ttl=30,
-    a_records=(
-        [azure_native.network.ARecordArgs(ipv4_address=common_app_gw_public_ip)]
-        if use_common_lb else
-        public_ip.ip_address.apply(
-            lambda ip: [azure_native.network.ARecordArgs(ipv4_address=ip)] if ip else []
-        )
-    ),
+    a_records=_a_records,
+)
+
+azure_native.network.RecordSet(
+    f"{project_name}-dns-wildcard{suffix}",
+    resource_group_name=dns_zone_rg,
+    zone_name=dns_zone_name,
+    relative_record_set_name=f"*.{dns_record_name}",
+    record_type="A",
+    ttl=30,
+    a_records=_a_records,
 )
 
 # ─────────────────────────────────────────────────────────────────────────────
